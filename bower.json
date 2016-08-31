@@ -1,0 +1,22 @@
+{
+  "name": "phaser-sprite-gui",
+  "description": "Inspect and manipulate Phaser Sprites (via dat.gui)",
+  "main": "index.js",
+  "authors": [
+    "samme"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/samme/phaser-sprite-gui",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "screenshot.png"
+  ],
+  "dependencies": {
+    "dat-gui": "^0.5.1"
+  }
+}
