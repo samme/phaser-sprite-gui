@@ -1,3 +1,5 @@
+![Screenshot](https://samme.github.io/phaser-sprite-gui/screenshot.png)
+
 # Phaser Sprite GUI
 
 Inspect and manipulate Phaser Sprites (via [dat.gui](https://github.com/dataarts/dat.gui)).
