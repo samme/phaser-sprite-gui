@@ -66,6 +66,7 @@
       this.add(sprite, "autoCull").listen();
       this.addAnchor();
       this.add(sprite, "blendMode", Phaser.blendModes).listen();
+      this.add(sprite, "bringToTop");
       this.addBody();
       this.add(sprite, "cacheAsBitmap").listen();
       this.add(sprite, "checkWorldBounds").listen();
@@ -76,12 +77,18 @@
       this.add(sprite, "frameName").listen();
       this.add(sprite, "health", 0, sprite.maxHealth).listen();
       this.add(sprite, "key").listen();
+      this.add(sprite, "kill");
       this.add(sprite, "lifespan", 0).listen();
+      this.add(sprite, "moveDown");
+      this.add(sprite, "moveUp");
       this.add(sprite, "name").listen();
       this.add(sprite, "outOfBoundsKill").listen();
       this.add(sprite, "outOfCameraBoundsKill").listen();
       this.add(sprite, "renderable").listen();
+      this.add(sprite, "reset");
+      this.add(sprite, "revive");
       this.add(sprite, "rotation", -Math.PI, Math.PI).listen();
+      this.add(sprite, "sendToBack");
       this.addScale();
       this.add(sprite, "smoothed").listen();
       this.add(sprite, "tint").listen();
