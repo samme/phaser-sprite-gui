@@ -6,14 +6,15 @@
 
   @addAnchor = addAnchor = (cn, anchor) ->
     addPoint cn, anchor, 0, 1
-    return
-    
+    cn
+
   @addBody = addBody = (cn, body) ->
     cn.add(body, "allowGravity")
     cn.add(body, "allowRotation")
     cn.add(body, "angularAcceleration", -3600, 3600).listen()
     cn.add(body, "angularDrag", 0, 3600).listen()
     cn.add(body, "angularVelocity", -body.maxAngular, body.maxAngular).listen()
+    addPoint (cn.addFolder "bounce"), body.bounce, 0, 1
     cn.add(body, "collideWorldBounds").listen()
     addPoint (cn.addFolder "drag"), body.drag, 0, 1000
     cn.add(body, "enable").listen()
@@ -29,16 +30,28 @@
     cn.add(body, "skipQuadTree").listen()
     cn.add(body, "syncBounds").listen()
     addPoint (cn.addFolder "velocity"), body.velocity, -1000, 1000
-    return
-    
+    cn
+
+  @addInput = addInput = (cn, input) ->
+    cn.add(input, "enabled").listen()
+    # TODO …
+    cn
+
   @addPoint = addPoint = (cn, point, min, max) ->
-    cn.add(point, "x").min(min).max(max).listen()
-    cn.add(point, "y").min(min).max(max).listen()
-    return
-    
+    cn.add(point, "x", min, max).listen()
+    cn.add(point, "y", min, max).listen()
+    cn
+
+  @addRect = addRect = (cn, rect, min, max) ->
+    cn.add(rect, "x", min, max).listen()
+    cn.add(rect, "y", min, max).listen()
+    cn.add(rect, "width", min, max).listen()
+    cn.add(rect, "height", min, max).listen()
+    cn
+
   @addScale = addScale = (cn, scale, min, max) ->
     addPoint cn, scale, min, max
-    return
+    cn
 
   constructor: (@sprite, params = {}) ->
     super params
@@ -86,18 +99,13 @@
     return
 
   addAnchor: ->
-    {anchor} = @sprite
-    folder = @addFolder "anchor"
-    folder.add(anchor, "x", 0, 1).listen()
-    folder.add(anchor, "y", 0, 1).listen()
-    folder
+    addAnchor (@addFolder "anchor"), @sprite.anchor
 
   addBody: ->
-    folder = @addFolder "body"
-    addBody folder, @sprite.body
-    folder
+    addBody (@addFolder "body"), @sprite.body
+
+  addInput: ->
+    addInput (@addFolder "input"), @sprite.input
 
   addScale: ->
-    folder = @addFolder "scale"
-    addScale folder, @sprite.scale, (@sprite.scaleMin or -4), (@sprite.scaleMax or 4)
-    folder
+    addScale (@addFolder "scale"), @sprite.scale, (@sprite.scaleMin or -4), (@sprite.scaleMax or 4)

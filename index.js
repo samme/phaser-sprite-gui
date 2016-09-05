@@ -8,12 +8,13 @@
   Phaser = this.Phaser;
 
   this.SpriteGUI = Object.freeze(SpriteGUI = (function(superClass) {
-    var addAnchor, addBody, addPoint, addScale;
+    var addAnchor, addBody, addInput, addPoint, addRect, addScale;
 
     extend(SpriteGUI, superClass);
 
     SpriteGUI.addAnchor = addAnchor = function(cn, anchor) {
       addPoint(cn, anchor, 0, 1);
+      return cn;
     };
 
     SpriteGUI.addBody = addBody = function(cn, body) {
@@ -22,6 +23,7 @@
       cn.add(body, "angularAcceleration", -3600, 3600).listen();
       cn.add(body, "angularDrag", 0, 3600).listen();
       cn.add(body, "angularVelocity", -body.maxAngular, body.maxAngular).listen();
+      addPoint(cn.addFolder("bounce"), body.bounce, 0, 1);
       cn.add(body, "collideWorldBounds").listen();
       addPoint(cn.addFolder("drag"), body.drag, 0, 1000);
       cn.add(body, "enable").listen();
@@ -37,15 +39,31 @@
       cn.add(body, "skipQuadTree").listen();
       cn.add(body, "syncBounds").listen();
       addPoint(cn.addFolder("velocity"), body.velocity, -1000, 1000);
+      return cn;
+    };
+
+    SpriteGUI.addInput = addInput = function(cn, input) {
+      cn.add(input, "enabled").listen();
+      return cn;
     };
 
     SpriteGUI.addPoint = addPoint = function(cn, point, min, max) {
-      cn.add(point, "x").min(min).max(max).listen();
-      cn.add(point, "y").min(min).max(max).listen();
+      cn.add(point, "x", min, max).listen();
+      cn.add(point, "y", min, max).listen();
+      return cn;
+    };
+
+    SpriteGUI.addRect = addRect = function(cn, rect, min, max) {
+      cn.add(rect, "x", min, max).listen();
+      cn.add(rect, "y", min, max).listen();
+      cn.add(rect, "width", min, max).listen();
+      cn.add(rect, "height", min, max).listen();
+      return cn;
     };
 
     SpriteGUI.addScale = addScale = function(cn, scale, min, max) {
       addPoint(cn, scale, min, max);
+      return cn;
     };
 
     function SpriteGUI(sprite1, params) {
@@ -99,26 +117,19 @@
     };
 
     SpriteGUI.prototype.addAnchor = function() {
-      var anchor, folder;
-      anchor = this.sprite.anchor;
-      folder = this.addFolder("anchor");
-      folder.add(anchor, "x", 0, 1).listen();
-      folder.add(anchor, "y", 0, 1).listen();
-      return folder;
+      return addAnchor(this.addFolder("anchor"), this.sprite.anchor);
     };
 
     SpriteGUI.prototype.addBody = function() {
-      var folder;
-      folder = this.addFolder("body");
-      addBody(folder, this.sprite.body);
-      return folder;
+      return addBody(this.addFolder("body"), this.sprite.body);
+    };
+
+    SpriteGUI.prototype.addInput = function() {
+      return addInput(this.addFolder("input"), this.sprite.input);
     };
 
     SpriteGUI.prototype.addScale = function() {
-      var folder;
-      folder = this.addFolder("scale");
-      addScale(folder, this.sprite.scale, this.sprite.scaleMin || -4, this.sprite.scaleMax || 4);
-      return folder;
+      return addScale(this.addFolder("scale"), this.sprite.scale, this.sprite.scaleMin || -4, this.sprite.scaleMax || 4);
     };
 
     return SpriteGUI;
