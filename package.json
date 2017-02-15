@@ -12,7 +12,9 @@
     "dat.gui": "^0.6.1",
     "phaser": "^2.6.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "coffeebar": "^1.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/samme/phaser-sprite-gui.git"
