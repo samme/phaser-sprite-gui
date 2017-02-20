@@ -123,13 +123,14 @@
     };
 
     SpriteGUI.prototype.addAll = function() {
-      var ref, sprite, world;
+      var animations, sprite, world;
       sprite = this.sprite;
       world = sprite.game.world;
+      animations = sprite.animations;
       this.add(sprite, "alive").listen();
       this.add(sprite, "alpha", 0, 1).listen();
       this.add(sprite, "autoCull").listen();
-      if ((ref = sprite.animations) != null ? ref.currentAnim : void 0) {
+      if ((animations != null ? animations.frameTotal : void 0) > 1) {
         this.addAnim();
       }
       this.addAnchor();
@@ -144,7 +145,7 @@
       this.add(sprite, "debug").listen();
       this.add(sprite, "exists").listen();
       this.add(sprite, "fixedToCamera").listen();
-      this.add(sprite, "frame", sprite.animations.frameData.getFrameIndexes()).listen();
+      this.add(sprite, "frame", animations.frameData.getFrameIndexes()).listen();
       this.add(sprite, "frameName").listen();
       this.add(sprite, "health", 0, sprite.maxHealth).listen();
       if (sprite.input) {

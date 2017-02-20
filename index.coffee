@@ -93,22 +93,23 @@
   addAll: ->
     {sprite} = this
     {world} = sprite.game
+    {animations} = sprite
 
     @add(sprite, "alive").listen()
     @add(sprite, "alpha", 0, 1).listen()
     @add(sprite, "autoCull").listen()
-    @addAnim() if sprite.animations?.currentAnim
+    @addAnim() if animations?.frameTotal > 1
     @addAnchor()
     @add(sprite, "blendMode", Phaser.blendModes).listen()
     @add(sprite, "bringToTop")
     @addBody() if sprite.body.type is Phaser.Physics.ARCADE
     @add(sprite, "cacheAsBitmap").listen()
-    @addPoint "cameraOffset", sprite.cameraOffset
+    @addPoint "cameraOffset", sprite.cameraOffset # TODO
     @add(sprite, "checkWorldBounds").listen()
     @add(sprite, "debug").listen()
     @add(sprite, "exists").listen()
     @add(sprite, "fixedToCamera").listen()
-    @add(sprite, "frame", sprite.animations.frameData.getFrameIndexes()).listen()
+    @add(sprite, "frame", animations.frameData.getFrameIndexes()).listen()
     @add(sprite, "frameName").listen()
     @add(sprite, "health", 0, sprite.maxHealth).listen()
     @addInput() if sprite.input
