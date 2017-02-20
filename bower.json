@@ -14,10 +14,11 @@
     "bower_components",
     "test",
     "tests",
-    "screenshot.png"
+    "*.png",
+    "*.coffee"
   ],
   "dependencies": {
-    "dat-gui": "^0.5.1",
+    "dat-gui": "^0.6.1",
     "phaser": "^2.6.2"
   }
 }
