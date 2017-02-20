@@ -8,56 +8,95 @@
   Phaser = this.Phaser;
 
   this.SpriteGUI = Object.freeze(SpriteGUI = (function(superClass) {
-    var addAnchor, addBody, addInput, addPoint, addRect, addScale;
+    var addAnchor, addAnim, addBody, addInput, addPoint, addRect, addScale;
 
     extend(SpriteGUI, superClass);
 
     SpriteGUI.addAnchor = addAnchor = function(cn, anchor) {
-      addPoint(cn, anchor, 0, 1);
+      addPoint(cn, anchor, 0, 1, 0.1);
+      return cn;
+    };
+
+    SpriteGUI.addAnim = addAnim = function(cn, anim) {
+      cn.add(anim, "paused").listen();
+      cn.add(anim, "updateIfVisible").listen();
       return cn;
     };
 
     SpriteGUI.addBody = addBody = function(cn, body) {
       cn.add(body, "allowGravity");
       cn.add(body, "allowRotation");
-      cn.add(body, "angularAcceleration", -3600, 3600).listen();
-      cn.add(body, "angularDrag", 0, 3600).listen();
+      cn.add(body, "angularAcceleration", -body.maxAngular, body.maxAngular).listen();
+      cn.add(body, "angularDrag", 0, 2 * body.maxAngular).listen();
       cn.add(body, "angularVelocity", -body.maxAngular, body.maxAngular).listen();
-      addPoint(cn.addFolder("bounce"), body.bounce, 0, 1);
+      addPoint(cn.addFolder("bounce"), body.bounce, 0, 1, 0.1);
       cn.add(body, "collideWorldBounds").listen();
-      addPoint(cn.addFolder("drag"), body.drag, 0, 1000);
+      addPoint(cn.addFolder("drag"), body.drag, 0, 1000, 10);
       cn.add(body, "enable").listen();
-      addPoint(cn.addFolder("friction"), body.friction, 0, 1);
-      addPoint(cn.addFolder("gravity"), body.gravity, -1000, 1000);
+      addPoint(cn.addFolder("friction"), body.friction, 0, 1, 0.1);
+      addPoint(cn.addFolder("gravity"), body.gravity, -1000, 1000, 100);
       cn.add(body, "immovable").listen();
-      cn.add(body, "mass", 0, 100).listen();
-      cn.add(body, "maxAngular", 0, 3600).listen();
-      addPoint(cn.addFolder("maxVelocity"), body.maxVelocity, 0, 1000);
+      cn.add(body, "mass", 0, 10, 1).listen();
+      cn.add(body, "maxAngular", 0, 1000, 10).listen();
+      addPoint(cn.addFolder("maxVelocity"), body.maxVelocity, 0, 1000, 10);
       cn.add(body, "moves").listen();
       addPoint(cn.addFolder("offset"), body.offset);
-      cn.add(body, "rotation", -180, 180).step(5).listen();
+      cn.add(body, "rotation", -180, 180, 5).listen();
       cn.add(body, "skipQuadTree").listen();
       cn.add(body, "syncBounds").listen();
-      addPoint(cn.addFolder("velocity"), body.velocity, -1000, 1000);
+      addPoint(cn.addFolder("velocity"), body.velocity, -1000, 1000, 10);
       return cn;
     };
 
     SpriteGUI.addInput = addInput = function(cn, input) {
+      cn.add(input, "allowHorizontalDrag").listen();
+      cn.add(input, "allowVerticalDrag").listen();
+      if (input.boundsRect) {
+        addRect(cn.addFolder("boundsRect"), input.boundsRect);
+      }
+      cn.add(input, "dragDistanceThreshold", 0, 10, 1).listen();
+      cn.add(input, "draggable").listen();
+      addPoint(cn.addFolder("dragOffset"), input.dragOffset, 0, 100);
+      cn.add(input, "dragStopBlocksInputUp").listen();
+      cn.add(input, "dragTimeThreshold", 0, 100, 10).listen();
+      cn.add(input, "bringToTop").listen();
       cn.add(input, "enabled").listen();
+      cn.add(input, "pixelPerfectAlpha", 0, 255, 5).listen();
+      cn.add(input, "pixelPerfectClick").listen();
+      cn.add(input, "pixelPerfectOver").listen();
+      cn.add(input, "priorityID", 0, 10, 1).listen();
+      cn.add(input, "reset");
+      cn.add(input, "snapOffsetX", -100, 100, 10).listen();
+      cn.add(input, "snapOffsetY", -100, 100, 10).listen();
+      cn.add(input, "snapOnDrag").listen();
+      cn.add(input, "snapOnRelease").listen();
+      cn.add(input, "snapX", 0, 100, 5).listen();
+      cn.add(input, "snapY", 0, 100, 5).listen();
+      cn.add(input, "stop");
+      cn.add(input, "useHandCursor").listen();
       return cn;
     };
 
-    SpriteGUI.addPoint = addPoint = function(cn, point, min, max) {
-      cn.add(point, "x", min, max).listen();
-      cn.add(point, "y", min, max).listen();
+    SpriteGUI.addPoint = addPoint = function(cn, point, min, max, step) {
+      cn.add(point, "x", min, max, step).listen();
+      cn.add(point, "y", min, max, step).listen();
       return cn;
     };
 
-    SpriteGUI.addRect = addRect = function(cn, rect, min, max) {
-      cn.add(rect, "x", min, max).listen();
-      cn.add(rect, "y", min, max).listen();
-      cn.add(rect, "width", min, max).listen();
-      cn.add(rect, "height", min, max).listen();
+    SpriteGUI.addRect = addRect = function(cn, rect, min, max, step) {
+      if (min == null) {
+        min = 0;
+      }
+      if (max == null) {
+        max = 1000;
+      }
+      if (step == null) {
+        step = 10;
+      }
+      cn.add(rect, "x", min, max, step).listen();
+      cn.add(rect, "y", min, max, step).listen();
+      cn.add(rect, "width", min, max, step).listen();
+      cn.add(rect, "height", min, max, step).listen();
       return cn;
     };
 
@@ -75,18 +114,32 @@
       this.addAll();
     }
 
+    SpriteGUI.prototype.add = function(obj, prop) {
+      if (obj[prop] === null) {
+        console.warn("Property '" + prop + "' is null");
+      } else {
+        return SpriteGUI.__super__.add.apply(this, arguments);
+      }
+    };
+
     SpriteGUI.prototype.addAll = function() {
-      var sprite, world;
+      var ref, sprite, world;
       sprite = this.sprite;
       world = sprite.game.world;
       this.add(sprite, "alive").listen();
       this.add(sprite, "alpha", 0, 1).listen();
       this.add(sprite, "autoCull").listen();
+      if ((ref = sprite.animations) != null ? ref.currentAnim : void 0) {
+        this.addAnim();
+      }
       this.addAnchor();
       this.add(sprite, "blendMode", Phaser.blendModes).listen();
       this.add(sprite, "bringToTop");
-      this.addBody();
+      if (sprite.body.type === Phaser.Physics.ARCADE) {
+        this.addBody();
+      }
       this.add(sprite, "cacheAsBitmap").listen();
+      this.addPoint("cameraOffset", sprite.cameraOffset);
       this.add(sprite, "checkWorldBounds").listen();
       this.add(sprite, "debug").listen();
       this.add(sprite, "exists").listen();
@@ -94,9 +147,12 @@
       this.add(sprite, "frame", sprite.animations.frameData.getFrameIndexes()).listen();
       this.add(sprite, "frameName").listen();
       this.add(sprite, "health", 0, sprite.maxHealth).listen();
+      if (sprite.input) {
+        this.addInput();
+      }
       this.add(sprite, "key").listen();
       this.add(sprite, "kill");
-      this.add(sprite, "lifespan", 0).listen();
+      this.add(sprite, "lifespan", 0, 10000, 100).listen();
       this.add(sprite, "moveDown");
       this.add(sprite, "moveUp");
       this.add(sprite, "name").listen();
@@ -105,7 +161,7 @@
       this.add(sprite, "renderable").listen();
       this.add(sprite, "reset");
       this.add(sprite, "revive");
-      this.add(sprite, "rotation", -Math.PI, Math.PI).listen();
+      this.add(sprite, "rotation", -Math.PI, Math.PI, Math.PI / 30).listen();
       this.add(sprite, "sendToBack");
       this.addScale();
       this.add(sprite, "smoothed").listen();
@@ -120,6 +176,10 @@
       return addAnchor(this.addFolder("anchor"), this.sprite.anchor);
     };
 
+    SpriteGUI.prototype.addAnim = function() {
+      return addAnim(this.addFolder("animations"), this.sprite.animations);
+    };
+
     SpriteGUI.prototype.addBody = function() {
       return addBody(this.addFolder("body"), this.sprite.body);
     };
@@ -128,8 +188,12 @@
       return addInput(this.addFolder("input"), this.sprite.input);
     };
 
+    SpriteGUI.prototype.addPoint = function(name, point, min, max, step) {
+      return addPoint(this.addFolder(name), point, min, max, step);
+    };
+
     SpriteGUI.prototype.addScale = function() {
-      return addScale(this.addFolder("scale"), this.sprite.scale, this.sprite.scaleMin || -4, this.sprite.scaleMax || 4);
+      return addScale(this.addFolder("scale"), this.sprite.scale, this.sprite.scaleMin || -5, this.sprite.scaleMax || 5);
     };
 
     return SpriteGUI;
