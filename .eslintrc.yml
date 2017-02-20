@@ -1,12 +1,6 @@
 env:
   browser: yes
-  commonjs: yes
 extends: 'eslint:recommended'
-globals:
-  dat: no
-  p2: no
-  Phaser: no
-  PIXI: no
 rules:
   indent:
     - 'off'
