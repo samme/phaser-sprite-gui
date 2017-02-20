@@ -1,0 +1,29 @@
+env:
+  browser: yes
+  commonjs: yes
+extends: 'eslint:recommended'
+globals:
+  dat: no
+  p2: no
+  Phaser: no
+  PIXI: no
+rules:
+  indent:
+    - 'off'
+  linebreak-style:
+    - warn
+    - unix
+  no-console:
+    - warn
+    - allow:
+      - warn
+  no-shadow:
+    - warn
+  no-unused-vars:
+    - warn
+  quotes:
+    - warn
+    - double
+  semi:
+    - warn
+    - always
