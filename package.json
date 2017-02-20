@@ -4,7 +4,8 @@
   "description": "Inspect and manipulate Phaser Sprites (via dat.gui)",
   "main": "index.js",
   "scripts": {
-    "start": "coffeebar --watch index.coffee"
+    "start": "coffeebar --watch .",
+    "preversion": "eslint ."
   },
   "author": "samme",
   "license": "MIT",
