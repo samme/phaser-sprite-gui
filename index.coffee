@@ -16,9 +16,9 @@
   @addBody = addBody = (cn, body) ->
     cn.add(body, "allowGravity")
     cn.add(body, "allowRotation")
-    cn.add(body, "angularAcceleration", -body.maxAngular, body.maxAngular).listen()
-    cn.add(body, "angularDrag", 0, 2 * body.maxAngular).listen()
-    cn.add(body, "angularVelocity", -body.maxAngular, body.maxAngular).listen()
+    cn.add(body, "angularAcceleration", -body.maxAngular, body.maxAngular, 10).listen()
+    cn.add(body, "angularDrag", 0, 2 * body.maxAngular, 10).listen()
+    cn.add(body, "angularVelocity", -body.maxAngular, body.maxAngular, 10).listen()
     addPoint (cn.addFolder "bounce"), body.bounce, 0, 1, 0.1
     cn.add(body, "collideWorldBounds").listen()
     addPoint (cn.addFolder "drag"), body.drag, 0, 1000, 10
@@ -26,7 +26,7 @@
     addPoint (cn.addFolder "friction"), body.friction, 0, 1, 0.1
     addPoint (cn.addFolder "gravity"), body.gravity, -1000, 1000, 100
     cn.add(body, "immovable").listen()
-    cn.add(body, "mass", 0, 10, 1).listen()
+    cn.add(body, "mass", 0.5, 10, 0.5).listen()
     cn.add(body, "maxAngular", 0, 1000, 10).listen()
     addPoint (cn.addFolder "maxVelocity"), body.maxVelocity, 0, 1000, 10
     cn.add(body, "moves").listen()
