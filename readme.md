@@ -1,14 +1,14 @@
 ![Screenshot](https://samme.github.io/phaser-sprite-gui/screenshot.png)
 
-Phaser Sprite GUI
-=================
+[Demo](https://samme.github.io/phaser-sprite-gui/)
 
-Inspect and manipulate Phaser Sprites (via [dat.gui](https://github.com/dataarts/dat.gui)).
+Install
+-------
+
+If not using `npm` or `bower`, add [dat.gui](https://github.com/dataarts/dat.gui) and [index.js](index.js) to your project.
 
 Use
 ---
-
-Add [dat.GUI](https://github.com/dataarts/dat.gui) and [index.js](index.js).
 
 ```javascript
 // @create:
