@@ -18,4 +18,14 @@ var gui = new SpriteGUI(sprite);
 
 // @shutdown:
 gui.destroy();
+
+// Pass GUI params (optional):
+// Example: 320px wide panel
+var gui = new SpriteGUI(sprite, {width: 320});
+
+// Filter sprite properties (optional):
+// Example: Show all properties *except* `body`
+var gui = new SpriteGUI(sprite, null, {exclude: ['body']});
+// Example: Show *only* `body`
+var gui = new SpriteGUI(sprite, null, {include: ['body']});
 ```

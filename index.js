@@ -8,7 +8,7 @@
   Phaser = this.Phaser;
 
   this.SpriteGUI = Object.freeze(SpriteGUI = (function(superClass) {
-    var addAnchor, addAnim, addBody, addInput, addPoint, addRect, addScale;
+    var addAnchor, addAnim, addBody, addInput, addPoint, addRect, addScale, createMap;
 
     extend(SpriteGUI, superClass);
 
@@ -105,20 +105,59 @@
       return cn;
     };
 
-    function SpriteGUI(sprite1, params) {
+    SpriteGUI.createMap = createMap = function(arr) {
+      var i, key, len, map;
+      map = {};
+      for (i = 0, len = arr.length; i < len; i++) {
+        key = arr[i];
+        map[key] = true;
+      }
+      return map;
+    };
+
+    SpriteGUI.prototype.exclude = null;
+
+    SpriteGUI.prototype.include = null;
+
+    function SpriteGUI(sprite1, params, options) {
       this.sprite = sprite1;
       if (params == null) {
         params = {};
       }
+      if (options == null) {
+        options = {};
+      }
       SpriteGUI.__super__.constructor.call(this, params);
+      if (options) {
+        if (options.include) {
+          this.include = createMap(options.include);
+          this.filter = this.filterInclude;
+        } else if (options.exclude) {
+          this.exclude = createMap(options.exclude);
+          this.filter = this.filterExclude;
+        }
+      }
       this.addAll();
     }
 
     SpriteGUI.prototype.add = function(obj, prop) {
+      if (!this.filter(prop)) {
+        return;
+      }
       if (obj[prop] === null) {
         console.warn("Property '" + prop + "' is null");
       } else {
         return SpriteGUI.__super__.add.apply(this, arguments);
+      }
+    };
+
+    SpriteGUI.prototype.listenTo = function(obj, prop) {
+      var result;
+      result = this.add.apply(this, arguments);
+      if (result) {
+        return result.listen();
+      } else {
+        return result;
       }
     };
 
@@ -128,66 +167,74 @@
       world = sprite.game.world;
       bounds = world.bounds;
       animations = sprite.animations;
-      this.add(sprite, "alive").listen();
-      this.add(sprite, "alpha", 0, 1).listen();
-      this.add(sprite, "autoCull").listen();
+      this.listenTo(sprite, "alive");
+      this.listenTo(sprite, "alpha", 0, 1);
+      this.listenTo(sprite, "autoCull");
       if ((animations != null ? animations.frameTotal : void 0) > 1) {
         this.addAnim();
       }
       this.addAnchor();
-      this.add(sprite, "blendMode", Phaser.blendModes).listen();
+      this.listenTo(sprite, "blendMode", Phaser.blendModes);
       this.add(sprite, "bringToTop");
       if (sprite.body.type === Phaser.Physics.ARCADE) {
         this.addBody();
       }
-      this.add(sprite, "cacheAsBitmap").listen();
+      this.listenTo(sprite, "cacheAsBitmap");
       this.addPoint("cameraOffset", sprite.cameraOffset);
-      this.add(sprite, "checkWorldBounds").listen();
-      this.add(sprite, "debug").listen();
-      this.add(sprite, "exists").listen();
-      this.add(sprite, "fixedToCamera").listen();
-      this.add(sprite, "frame", animations.frameData.getFrameIndexes()).listen();
-      this.add(sprite, "frameName").listen();
-      this.add(sprite, "health", 0, sprite.maxHealth).listen();
+      this.listenTo(sprite, "checkWorldBounds");
+      this.listenTo(sprite, "debug");
+      this.listenTo(sprite, "exists");
+      this.listenTo(sprite, "fixedToCamera");
+      this.listenTo(sprite, "frame", animations.frameData.getFrameIndexes());
+      this.listenTo(sprite, "frameName");
+      this.listenTo(sprite, "health", 0, sprite.maxHealth);
       if (sprite.input) {
         this.addInput();
       }
-      this.add(sprite, "key").listen();
+      this.listenTo(sprite, "key");
       this.add(sprite, "kill");
-      this.add(sprite, "lifespan", 0, 10000, 100).listen();
+      this.listenTo(sprite, "lifespan", 0, 10000, 100);
       this.add(sprite, "moveDown");
       this.add(sprite, "moveUp");
-      this.add(sprite, "name").listen();
-      this.add(sprite, "outOfBoundsKill").listen();
-      this.add(sprite, "outOfCameraBoundsKill").listen();
-      this.add(sprite, "renderable").listen();
+      this.listenTo(sprite, "name");
+      this.listenTo(sprite, "outOfBoundsKill");
+      this.listenTo(sprite, "outOfCameraBoundsKill");
+      this.listenTo(sprite, "renderable");
       this.add(sprite, "reset");
       this.add(sprite, "revive");
-      this.add(sprite, "rotation", -Math.PI, Math.PI, Math.PI / 30).listen();
+      this.listenTo(sprite, "rotation", -Math.PI, Math.PI, Math.PI / 30);
       this.add(sprite, "sendToBack");
       this.addScale();
-      this.add(sprite, "smoothed").listen();
-      this.add(sprite, "tint").listen();
-      this.add(sprite, "visible").listen();
-      this.add(sprite, "x", world.bounds.left, world.bounds.right).listen();
-      this.add(sprite, "y", world.bounds.top, world.bounds.bottom).listen();
-      this.add(sprite, "z").listen();
+      this.listenTo(sprite, "smoothed");
+      this.listenTo(sprite, "tint");
+      this.listenTo(sprite, "visible");
+      this.listenTo(sprite, "x", world.bounds.left, world.bounds.right);
+      this.listenTo(sprite, "y", world.bounds.top, world.bounds.bottom);
+      this.listenTo(sprite, "z");
     };
 
     SpriteGUI.prototype.addAnchor = function() {
-      return addAnchor(this.addFolder("anchor"), this.sprite.anchor);
+      if (this.filter("anchor")) {
+        return addAnchor(this.addFolder("anchor"), this.sprite.anchor);
+      }
     };
 
     SpriteGUI.prototype.addAnim = function() {
-      return addAnim(this.addFolder("animations"), this.sprite.animations);
+      if (this.filter("animations")) {
+        return addAnim(this.addFolder("animations"), this.sprite.animations);
+      }
     };
 
     SpriteGUI.prototype.addBody = function() {
-      return addBody(this.addFolder("body"), this.sprite.body);
+      if (this.filter("body")) {
+        return addBody(this.addFolder("body"), this.sprite.body);
+      }
     };
 
     SpriteGUI.prototype.addInput = function() {
-      return addInput(this.addFolder("input"), this.sprite.input);
+      if (this.filter("input")) {
+        return addInput(this.addFolder("input"), this.sprite.input);
+      }
     };
 
     SpriteGUI.prototype.addPoint = function(name, point, min, max, step) {
@@ -195,7 +242,23 @@
     };
 
     SpriteGUI.prototype.addScale = function() {
-      return addScale(this.addFolder("scale"), this.sprite.scale, this.sprite.scaleMin || -5, this.sprite.scaleMax || 5);
+      if (this.filter("scale")) {
+        return addScale(this.addFolder("scale"), this.sprite.scale, this.sprite.scaleMin || -5, this.sprite.scaleMax || 5);
+      }
+    };
+
+    SpriteGUI.prototype.filter = function() {
+      return true;
+    };
+
+    SpriteGUI.prototype.filterExclude = function(name) {
+      console.log((this.exclude[name] && 'skip' || 'keep') + " " + name);
+      return !this.exclude[name];
+    };
+
+    SpriteGUI.prototype.filterInclude = function(name) {
+      console.log((this.include[name] && 'keep' || 'skip') + " " + name);
+      return this.include[name];
     };
 
     return SpriteGUI;

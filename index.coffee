@@ -79,16 +79,41 @@
     addPoint cn, scale, min, max
     cn
 
-  constructor: (@sprite, params = {}) ->
+  @createMap = createMap = (arr) ->
+    map = {}
+    map[key] = yes for key in arr
+    map
+
+  exclude: null
+
+  include: null
+
+  constructor: (@sprite, params = {}, options = {}) ->
     super params
+    if options
+      if options.include
+        @include = createMap options.include
+        @filter = @filterInclude
+      else if options.exclude
+        @exclude = createMap options.exclude
+        @filter = @filterExclude
     @addAll()
 
   add: (obj, prop) ->
+    unless @filter prop
+      return
     if obj[prop] is null
       console.warn "Property '#{prop}' is null"
       return
     else
       super
+
+  listenTo: (obj, prop) ->
+    result = @add.apply this, arguments
+    if result
+      result.listen()
+    else
+      result
 
   addAll: ->
     {sprite} = this
@@ -96,60 +121,71 @@
     {bounds} = world
     {animations} = sprite
 
-    @add(sprite, "alive").listen()
-    @add(sprite, "alpha", 0, 1).listen()
-    @add(sprite, "autoCull").listen()
+    @listenTo(sprite, "alive")
+    @listenTo(sprite, "alpha", 0, 1)
+    @listenTo(sprite, "autoCull")
     @addAnim() if animations?.frameTotal > 1
     @addAnchor()
-    @add(sprite, "blendMode", Phaser.blendModes).listen()
+    @listenTo(sprite, "blendMode", Phaser.blendModes)
     @add(sprite, "bringToTop")
     @addBody() if sprite.body.type is Phaser.Physics.ARCADE
-    @add(sprite, "cacheAsBitmap").listen()
+    @listenTo(sprite, "cacheAsBitmap")
     @addPoint "cameraOffset", sprite.cameraOffset # TODO
-    @add(sprite, "checkWorldBounds").listen()
-    @add(sprite, "debug").listen()
-    @add(sprite, "exists").listen()
-    @add(sprite, "fixedToCamera").listen()
-    @add(sprite, "frame", animations.frameData.getFrameIndexes()).listen()
-    @add(sprite, "frameName").listen()
-    @add(sprite, "health", 0, sprite.maxHealth).listen()
+    @listenTo(sprite, "checkWorldBounds")
+    @listenTo(sprite, "debug")
+    @listenTo(sprite, "exists")
+    @listenTo(sprite, "fixedToCamera")
+    @listenTo(sprite, "frame", animations.frameData.getFrameIndexes())
+    @listenTo(sprite, "frameName")
+    @listenTo(sprite, "health", 0, sprite.maxHealth)
     @addInput() if sprite.input
-    @add(sprite, "key").listen()
+    @listenTo(sprite, "key")
     @add(sprite, "kill")
-    @add(sprite, "lifespan", 0, 10000, 100).listen()
+    @listenTo(sprite, "lifespan", 0, 10000, 100)
     @add(sprite, "moveDown")
     @add(sprite, "moveUp")
-    @add(sprite, "name").listen()
-    @add(sprite, "outOfBoundsKill").listen()
-    @add(sprite, "outOfCameraBoundsKill").listen()
-    @add(sprite, "renderable").listen()
+    @listenTo(sprite, "name")
+    @listenTo(sprite, "outOfBoundsKill")
+    @listenTo(sprite, "outOfCameraBoundsKill")
+    @listenTo(sprite, "renderable")
     @add(sprite, "reset")
     @add(sprite, "revive")
-    @add(sprite, "rotation", -Math.PI, Math.PI, Math.PI / 30).listen()
+    @listenTo(sprite, "rotation", -Math.PI, Math.PI, Math.PI / 30)
     @add(sprite, "sendToBack")
     @addScale()
-    @add(sprite, "smoothed").listen()
-    @add(sprite, "tint").listen()
-    @add(sprite, "visible").listen()
-    @add(sprite, "x", world.bounds.left, world.bounds.right).listen()
-    @add(sprite, "y", world.bounds.top, world.bounds.bottom).listen()
-    @add(sprite, "z").listen()
+    @listenTo(sprite, "smoothed")
+    @listenTo(sprite, "tint")
+    @listenTo(sprite, "visible")
+    @listenTo(sprite, "x", world.bounds.left, world.bounds.right)
+    @listenTo(sprite, "y", world.bounds.top, world.bounds.bottom)
+    @listenTo(sprite, "z")
     return
 
   addAnchor: ->
-    addAnchor (@addFolder "anchor"), @sprite.anchor
+    addAnchor (@addFolder "anchor"), @sprite.anchor if @filter "anchor"
 
   addAnim: ->
-    addAnim (@addFolder "animations"), @sprite.animations
+    addAnim (@addFolder "animations"), @sprite.animations if @filter "animations"
 
   addBody: ->
-    addBody (@addFolder "body"), @sprite.body
+    addBody (@addFolder "body"), @sprite.body if @filter "body"
 
   addInput: ->
-    addInput (@addFolder "input"), @sprite.input
+    addInput (@addFolder "input"), @sprite.input if @filter "input"
 
   addPoint: (name, point, min, max, step) ->
     addPoint (@addFolder name), point, min, max, step
 
   addScale: ->
-    addScale (@addFolder "scale"), @sprite.scale, (@sprite.scaleMin or -5), (@sprite.scaleMax or 5)
+    addScale (@addFolder "scale"), @sprite.scale, (@sprite.scaleMin or -5), (@sprite.scaleMax or 5) if @filter "scale"
+
+  filter: ->
+    yes
+
+  filterExclude: (name) ->
+    console.log "#{@exclude[name] and 'skip' or 'keep'} #{name}"
+    not @exclude[name]
+
+  filterInclude: (name) ->
+    console.log "#{@include[name] and 'keep' or 'skip'} #{name}"
+    @include[name]
