@@ -1,6 +1,6 @@
 {
   "name": "phaser-sprite-gui",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "Inspect and manipulate Phaser Sprites (via dat.gui)",
   "main": "index.js",
   "scripts": {
