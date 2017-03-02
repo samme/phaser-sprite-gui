@@ -123,9 +123,10 @@
     };
 
     SpriteGUI.prototype.addAll = function() {
-      var animations, sprite, world;
+      var animations, bounds, sprite, world;
       sprite = this.sprite;
       world = sprite.game.world;
+      bounds = world.bounds;
       animations = sprite.animations;
       this.add(sprite, "alive").listen();
       this.add(sprite, "alpha", 0, 1).listen();
@@ -168,8 +169,8 @@
       this.add(sprite, "smoothed").listen();
       this.add(sprite, "tint").listen();
       this.add(sprite, "visible").listen();
-      this.add(sprite, "x", world.left, world.right).listen();
-      this.add(sprite, "y", world.top, world.bottom).listen();
+      this.add(sprite, "x", world.bounds.left, world.bounds.right).listen();
+      this.add(sprite, "y", world.bounds.top, world.bounds.bottom).listen();
       this.add(sprite, "z").listen();
     };
 

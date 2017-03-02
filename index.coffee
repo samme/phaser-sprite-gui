@@ -93,6 +93,7 @@
   addAll: ->
     {sprite} = this
     {world} = sprite.game
+    {bounds} = world
     {animations} = sprite
 
     @add(sprite, "alive").listen()
@@ -130,9 +131,9 @@
     @add(sprite, "smoothed").listen()
     @add(sprite, "tint").listen()
     @add(sprite, "visible").listen()
-    @add(sprite, "x", world.left, world.right).listen()
-    @add(sprite, "y", world.top, world.bottom).listen()
-    @add(sprite, "z").listen();
+    @add(sprite, "x", world.bounds.left, world.bounds.right).listen()
+    @add(sprite, "y", world.bounds.top, world.bounds.bottom).listen()
+    @add(sprite, "z").listen()
     return
 
   addAnchor: ->
