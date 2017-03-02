@@ -11,6 +11,7 @@ droid = undefined
 droidGui = undefined
 jumpButton = undefined
 jumpTimer = 0
+hearts = undefined
 pack = undefined
 packGui = undefined
 player = undefined
@@ -27,8 +28,9 @@ preload = ->
   @load.baseURL = "example/assets/"
   @load.spritesheet "droid", "droid.png", 32, 32
   @load.spritesheet "dude", "dude.png", 32, 48
+  @load.image "background"
   @load.image "firstaid"
-  @load.image "background", "background2.png"
+  @load.image "heart"
   @load.image "rock"
   return
 
@@ -69,11 +71,11 @@ create = ->
   mixin
     allowGravity: no
     bounce: x: 0.5, y: 0.5
-    mass: 10
+    mass: 2
     maxVelocity: x: 100, y: 100
     velocity: x: 50, y: 0
   , droid.body
-  droid.body.setSize droid.width, (droid.height / 2), 0, (droid.height / 2)
+  droid.body.setSize droid.width, droid.height / 2, 0, droid.height / 2
   droid.animations.add "!", [ 0, 1, 2, 3 ], 5, true
   droid.animations.play "!"
   # Rocks
@@ -94,12 +96,23 @@ create = ->
   mixin
     bounce: x: 0.25, y: 0.25
     collideWorldBounds: yes
+    drag: x: 500, y: 0
+    mass: 0.5
   , pack.body
   pack.inputEnabled = yes
   pack.input.useHandCursor = yes
   pack.input.enableDrag()
   pack.events.onDragStart.add -> pack.body.enable = off
   pack.events.onDragStop .add -> pack.body.enable = on
+  # Hearts
+  hearts = @add.emitter 0, 0, 1
+    .setAlpha 0, 1, 1000, "Quad.easeInOut", yes
+    .setRotation 0, 0
+    .setScale 0, 1, 0, 1, 1000, "Quad.easeInOut", yes
+    .setXSpeed 0, 0
+    .setYSpeed -100, -50
+    .makeParticles "heart"
+  hearts.gravity = -500
   # Caption
   text = @add.text(5, 5, "[R]estart / ±[S]tep / s(T)ep forward",
     fill: "white"
@@ -125,6 +138,7 @@ create = ->
 
 update = ->
   {physics, world} = game
+  physics.arcade.overlap player, pack, emitHeart
   physics.arcade.collide [pack, player], [droid, rocks]
   maxVelocity = player.body.maxVelocity
   velocity = player.body.velocity
@@ -154,6 +168,12 @@ shutdown = ->
   playerGui.destroy()
   droidGui.destroy()
   packGui.destroy()
+  return
+
+emitHeart = (_player, _pack) ->
+  hearts
+    .at _pack.body
+    .emitParticle()
   return
 
 game = new (Phaser.Game)(
