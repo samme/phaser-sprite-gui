@@ -24,5 +24,11 @@
   "bugs": {
     "url": "https://github.com/samme/phaser-sprite-gui/issues"
   },
-  "homepage": "https://github.com/samme/phaser-sprite-gui#readme"
+  "homepage": "https://github.com/samme/phaser-sprite-gui#readme",
+  "directories": {
+    "example": "example"
+  },
+  "keywords": [
+    "phaser"
+  ]
 }
