@@ -11,7 +11,7 @@
   "author": "samme",
   "license": "MIT",
   "dependencies": {
-    "dat.gui": "^0.6.1",
+    "dat.gui": "github:dataarts/dat.gui",
     "phaser": "^2.6.2"
   },
   "devDependencies": {

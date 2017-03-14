@@ -18,7 +18,7 @@
     "*.coffee"
   ],
   "dependencies": {
-    "dat-gui": "^0.6.1",
-    "phaser": "^2.6.2"
+    "phaser": "^2.6.2",
+    "dat.gui": "dataarts/dat.gui#^0.6.2"
   }
 }
