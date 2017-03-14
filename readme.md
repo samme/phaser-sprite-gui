@@ -22,16 +22,19 @@ gui.destroy();
 
 ### Options
 
+#### Pass GUI params
+
 ```javascript
-// Pass GUI params:
-// ---------------
 // Example: 320px wide panel
 var gui = new SpriteGUI(sprite, {width: 320});
+```
 
-// Filter sprite properties:
-// ------------------------
+### Filter sprite properties
+
+```javascript
 // Example: Show all properties *except* `body`
 var gui = new SpriteGUI(sprite, null, {exclude: ['body']});
+
 // Example: Show *only* `body`
 var gui = new SpriteGUI(sprite, null, {include: ['body']});
 ```
