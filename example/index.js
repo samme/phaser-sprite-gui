@@ -39,7 +39,7 @@
     antialias: false,
     height: 480,
     renderer: Phaser.CANVAS,
-    scaleMode: Phaser.ScaleManager.USER_SCALE,
+    scaleMode: Phaser.ScaleManager.SHOW_ALL,
     width: 480,
     state: {
       init: function() {
@@ -47,7 +47,6 @@
         game = this.game;
         game.forceSingleUpdate = false;
         game.time.desiredFps = 30;
-        this.scale.setUserScale(2, 2);
       },
       preload: function() {
         this.load.baseURL = "example/assets/";

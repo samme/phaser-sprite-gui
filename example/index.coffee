@@ -29,7 +29,7 @@ window.GAME = new (Phaser.Game)
   height: 480
   renderer: Phaser.CANVAS
   # resolution: 1
-  scaleMode: Phaser.ScaleManager.USER_SCALE
+  scaleMode: Phaser.ScaleManager.SHOW_ALL
   # transparent: false
   width: 480
   state:
@@ -38,7 +38,6 @@ window.GAME = new (Phaser.Game)
       {game} = this
       game.forceSingleUpdate = off
       game.time.desiredFps = 30
-      @scale.setUserScale 2, 2
       return
 
     preload: ->
