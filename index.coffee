@@ -102,8 +102,9 @@
   add: (obj, prop) ->
     unless @filter prop
       return
-    if obj[prop] is null
-      console.warn "Property '#{prop}' is null"
+    val = obj[prop]
+    unless val?
+      console.warn "Skipping property '#{prop}': #{val}"
       return
     else
       super

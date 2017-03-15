@@ -141,11 +141,13 @@
     }
 
     SpriteGUI.prototype.add = function(obj, prop) {
+      var val;
       if (!this.filter(prop)) {
         return;
       }
-      if (obj[prop] === null) {
-        console.warn("Property '" + prop + "' is null");
+      val = obj[prop];
+      if (val == null) {
+        console.warn("Skipping property '" + prop + "': " + val);
       } else {
         return SpriteGUI.__super__.add.apply(this, arguments);
       }
