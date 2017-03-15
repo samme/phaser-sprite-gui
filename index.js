@@ -176,7 +176,7 @@
       this.addAnchor();
       this.listenTo(sprite, "blendMode", Phaser.blendModes);
       this.add(sprite, "bringToTop");
-      if (sprite.body.type === Phaser.Physics.ARCADE) {
+      if (sprite.body && sprite.body.type === Phaser.Physics.ARCADE) {
         this.addBody();
       }
       this.listenTo(sprite, "cacheAsBitmap");

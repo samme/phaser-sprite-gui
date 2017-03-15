@@ -128,7 +128,7 @@
     @addAnchor()
     @listenTo(sprite, "blendMode", Phaser.blendModes)
     @add(sprite, "bringToTop")
-    @addBody() if sprite.body.type is Phaser.Physics.ARCADE
+    @addBody() if sprite.body and sprite.body.type is Phaser.Physics.ARCADE
     @listenTo(sprite, "cacheAsBitmap")
     @addPoint "cameraOffset", sprite.cameraOffset # TODO
     @listenTo(sprite, "checkWorldBounds")
