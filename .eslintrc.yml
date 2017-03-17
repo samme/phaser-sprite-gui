@@ -5,19 +5,16 @@ rules:
   indent:
     - 'off'
   linebreak-style:
-    - warn
+    - error
     - unix
   no-console:
-    - warn
+    - error
     - allow:
       - warn
   no-shadow:
-    - warn
+    - error
   no-unused-vars:
-    - warn
+    - error
   quotes:
-    - warn
+    - error
     - double
-  semi:
-    - warn
-    - always
