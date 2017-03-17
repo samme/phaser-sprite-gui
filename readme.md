@@ -1,11 +1,29 @@
-![Screenshot](https://samme.github.io/phaser-sprite-gui/screenshot.png)
+Inspect and manipulate Phaser Sprites (via dat.gui). [Demo](https://samme.github.io/phaser-sprite-gui/)
 
-[Demo](https://samme.github.io/phaser-sprite-gui/)
+![Screenshot](https://samme.github.io/phaser-sprite-gui/screenshot.png)
 
 Install
 -------
 
-If not using `npm` or `bower`, add [dat.gui](https://github.com/dataarts/dat.gui) and [index.js](index.js) before your game scripts.
+### bower, npm
+
+[dat.gui](https://github.com/dataarts/dat.gui) is included (as a dependency), but you may need to switch to its [pre-built file](https://github.com/dataarts/dat.gui/blob/master/build/dat.gui.js) to avoid errors.
+
+With bower you can use `overrides` in your bower.json:
+
+```json
+"overrides": {
+  "dat.gui": {
+    "main": [
+      "build/dat.gui.js"
+    ],
+  }
+}
+```
+
+### Drop-in install
+
+Add [dat.gui](https://github.com/dataarts/dat.gui/tree/master/build) and [index.js](index.js) before your game scripts.
 
 Use
 ---
@@ -39,6 +57,4 @@ var gui = new SpriteGUI(sprite, null, {exclude: ['body']});
 var gui = new SpriteGUI(sprite, null, {include: ['body', 'velocity', 'x', 'y']});
 ```
 
-For nested properties, `include` must contain **every** name in the property chain: _eg_,
-  - Point values appear only if `x` and `y` are also included.
-  - Rectangle values appear only if `x`, `y`, `width`, and `height` properties are also included.
+For nested properties, `include` must contain **every** name in the property chain.
