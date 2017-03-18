@@ -1,25 +1,23 @@
-Inspect and manipulate Phaser Sprites (via dat.gui). [Demo](https://samme.github.io/phaser-sprite-gui/)
-
 ![Screenshot](https://samme.github.io/phaser-sprite-gui/screenshot.png)
+
+Inspect and manipulate Phaser Sprites (via dat.gui). [Demo](https://samme.github.io/phaser-sprite-gui/)
 
 Install
 -------
 
-### bower, npm
+### Bower
 
-[dat.gui](https://github.com/dataarts/dat.gui) is included (as a dependency), but you may need to switch to its [pre-built file](https://github.com/dataarts/dat.gui/blob/master/build/dat.gui.js) to avoid errors.
+    bower install -S samme/phaser-sprite-gui
 
-With bower you can use `overrides` in your bower.json:
+### NPM
 
-```json
-"overrides": {
-  "dat.gui": {
-    "main": [
-      "build/dat.gui.js"
-    ],
-  }
-}
-```
+    npm install -S phaser-sprite-gui
+
+If dat.gui doesn't build, use its pre-built script ([build/dat.gui.js](https://github.com/dataarts/dat.gui/blob/master/build/dat.gui.js)) instead.
+
+### Webpack
+
+Try [script-loader](https://github.com/webpack-contrib/script-loader).
 
 ### Drop-in install
 
