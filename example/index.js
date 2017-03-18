@@ -40,7 +40,7 @@
     height: 480,
     renderer: Phaser.CANVAS,
     scaleMode: Phaser.ScaleManager.SHOW_ALL,
-    width: 480,
+    width: 320,
     state: {
       init: function() {
         var game;
@@ -62,7 +62,7 @@
         ref = this.game, physics = ref.physics, world = ref.world;
         arcade = physics.arcade;
         Phaser.Canvas.setImageRenderingCrisp(this.game.canvas, true);
-        world.setBounds(0, 0, 480, 600);
+        world.setBounds(0, 0, 320, 600);
         arcade.checkCollision = {
           up: false,
           down: true,

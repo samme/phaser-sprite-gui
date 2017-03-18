@@ -31,7 +31,7 @@ window.GAME = new (Phaser.Game)
   # resolution: 1
   scaleMode: Phaser.ScaleManager.SHOW_ALL
   # transparent: false
-  width: 480
+  width: 320
   state:
 
     init: ->
@@ -54,7 +54,7 @@ window.GAME = new (Phaser.Game)
       {physics, world} = @game
       {arcade} = physics
       Phaser.Canvas.setImageRenderingCrisp @game.canvas, true
-      world.setBounds 0, 0, 480, 600
+      world.setBounds 0, 0, 320, 600
       arcade.checkCollision =
         up:    off
         down:  on
