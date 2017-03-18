@@ -155,7 +155,7 @@
       },
       blendMode: addBlendModeController,
       bringToTop: true,
-      body: {
+      body: body && body.type === Phaser.Physics.ARCADE ? {
         allowGravity: true,
         allowRotation: true,
         angularAcceleration: [-body.maxAngular, body.maxAngular, CONST.angle.step],
@@ -197,7 +197,7 @@
           x: [-body.maxVelocity.x, body.maxVelocity.x],
           y: [-body.maxVelocity.y, body.maxVelocity.y]
         }
-      },
+      } : false,
       cacheAsBitmap: true,
       cameraOffset: {
         x: worldRangeX,

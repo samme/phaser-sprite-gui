@@ -117,40 +117,43 @@ spriteProps = (sprite) ->
     blendMode: addBlendModeController
     bringToTop: yes
     body:
-      allowGravity: yes
-      allowRotation: yes
-      angularAcceleration: [-body.maxAngular, body.maxAngular, CONST.angle.step]
-      angularDrag: [0, 2 * body.maxAngular, CONST.angle.step]
-      angularVelocity: [-body.maxAngular, body.maxAngular, CONST.angle.step]
-      bounce:
-        x: CONST.bounce.range
-        y: CONST.bounce.range
-      collideWorldBounds: yes
-      drag:
-        x: CONST.drag.range
-        y: CONST.drag.range
-      enable: yes
-      friction:
-        x: CONST.friction.range
-        y: CONST.friction.range
-      gravity:
-        x: CONST.gravity.range
-        y: CONST.gravity.range
-      immovable: yes
-      mass: CONST.mass.range
-      maxAngular: CONST.maxAngular.range
-      maxVelocity:
-        x: CONST.maxVelocity.range
-        y: CONST.maxVelocity.range
-      moves: yes
-      offset:
-        x: CONST.offset.range
-        y: CONST.offset.range
-      rotation: CONST.angle.range
-      skipQuadTree: yes
-      velocity:
-        x: [-body.maxVelocity.x, body.maxVelocity.x]
-        y: [-body.maxVelocity.y, body.maxVelocity.y]
+      if body and body.type is Phaser.Physics.ARCADE
+        allowGravity: yes
+        allowRotation: yes
+        angularAcceleration: [-body.maxAngular, body.maxAngular, CONST.angle.step]
+        angularDrag: [0, 2 * body.maxAngular, CONST.angle.step]
+        angularVelocity: [-body.maxAngular, body.maxAngular, CONST.angle.step]
+        bounce:
+          x: CONST.bounce.range
+          y: CONST.bounce.range
+        collideWorldBounds: yes
+        drag:
+          x: CONST.drag.range
+          y: CONST.drag.range
+        enable: yes
+        friction:
+          x: CONST.friction.range
+          y: CONST.friction.range
+        gravity:
+          x: CONST.gravity.range
+          y: CONST.gravity.range
+        immovable: yes
+        mass: CONST.mass.range
+        maxAngular: CONST.maxAngular.range
+        maxVelocity:
+          x: CONST.maxVelocity.range
+          y: CONST.maxVelocity.range
+        moves: yes
+        offset:
+          x: CONST.offset.range
+          y: CONST.offset.range
+        rotation: CONST.angle.range
+        skipQuadTree: yes
+        velocity:
+          x: [-body.maxVelocity.x, body.maxVelocity.x]
+          y: [-body.maxVelocity.y, body.maxVelocity.y]
+      else
+        no
     cacheAsBitmap: yes
     cameraOffset:
       x: worldRangeX
