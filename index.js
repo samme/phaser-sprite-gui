@@ -5,7 +5,9 @@
     hasProp = {}.hasOwnProperty,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  dat = this.dat, Phaser = this.Phaser;
+  dat || (dat = window.dat);
+
+  Phaser || (Phaser = window.Phaser);
 
   isArray = Array.isArray;
 
@@ -263,7 +265,7 @@
     });
   };
 
-  freeze(this.SpriteGUI = (function(superClass) {
+  freeze(window.SpriteGUI = (function(superClass) {
     extend(SpriteGUI, superClass);
 
     SpriteGUI.prototype.exclude = null;

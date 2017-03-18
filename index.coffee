@@ -1,6 +1,7 @@
 "use strict"
 
-{dat, Phaser} = this
+dat    or dat    = window.dat
+Phaser or Phaser = window.Phaser
 
 {isArray} = Array
 
@@ -223,7 +224,7 @@ spriteProps = (sprite) ->
     z: yes
   }
 
-freeze class @SpriteGUI extends dat.GUI
+freeze class window.SpriteGUI extends dat.GUI
 
   exclude: null
 
