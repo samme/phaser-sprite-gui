@@ -6,7 +6,7 @@
   "scripts": {
     "prestart": "cp -v node_modules/dat.gui/build/dat.gui.js example/; open index.html",
     "start": "coffeebar --watch *.coffee example",
-    "preversion": "eslint .",
+    "preversion": "eslint *.js example/index.js",
     "pub": "np --no-cleanup"
   },
   "author": "samme",
