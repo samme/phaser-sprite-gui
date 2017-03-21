@@ -13,11 +13,11 @@ Install
 
     npm install -S phaser-sprite-gui
 
-If dat.gui doesn't build, use its pre-built script ([build/dat.gui.js](https://github.com/dataarts/dat.gui/blob/master/build/dat.gui.js)) instead.
+If `dat.gui/index.js` doesn't build, use `dat.gui/build/dat.gui.js` instead.
 
 ### Webpack
 
-Try [script-loader](https://github.com/webpack-contrib/script-loader).
+Try [noParse](https://webpack.js.org/guides/shimming/#noparse-option) and use `window.SpriteGUI`.
 
 ### Drop-in install
 
@@ -45,7 +45,7 @@ gui.destroy();
 var gui = new SpriteGUI(sprite, {width: 320});
 ```
 
-### Filter sprite properties
+#### Filter sprite properties
 
 ```javascript
 // Example: Show all properties *except* `body`
