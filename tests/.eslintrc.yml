@@ -1,0 +1,20 @@
+env:
+  browser: yes
+  mocha: yes
+extends: 'eslint:recommended'
+globals:
+  chai: no
+  Phaser: no
+  SpriteGUI: no
+rules:
+  indent:
+    - 'off'
+  no-console:
+    - error
+  no-shadow:
+    - error
+  no-unused-vars:
+    - error
+  quotes:
+    - error
+    - double
