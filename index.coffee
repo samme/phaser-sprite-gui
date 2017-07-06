@@ -1,7 +1,10 @@
 "use strict"
 
-dat    or dat    = window.dat
-Phaser or Phaser = window.Phaser
+dat    = dat    or window?.dat    or require? "dat"
+Phaser = Phaser or window?.Phaser or require? "phaser"
+
+throw new Error "Can't find `dat`"    unless dat
+throw new Error "Can't find `Phaser`" unless Phaser
 
 {isArray} = Array
 
@@ -227,7 +230,7 @@ spriteProps = (sprite) ->
     z: yes
   }
 
-freeze class window.SpriteGUI extends dat.GUI
+freeze class SpriteGUI extends dat.GUI
 
   exclude: null
 
@@ -295,3 +298,7 @@ freeze class window.SpriteGUI extends dat.GUI
 
   filterInclude: (name) ->
     @include[name]
+
+Phaser.SpriteGUI  = SpriteGUI
+window?.SpriteGUI = SpriteGUI
+module?.exports   = SpriteGUI
