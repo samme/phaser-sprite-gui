@@ -1,6 +1,6 @@
 "use strict"
 
-dat    = dat    or window?.dat    or require? "dat"
+dat    = dat    or window?.dat    or require? "dat.gui"
 Phaser = Phaser or window?.Phaser or require? "phaser"
 
 throw new Error "Can't find `dat`"    unless dat

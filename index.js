@@ -5,7 +5,7 @@
     hasProp = {}.hasOwnProperty,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  dat = dat || (typeof window !== "undefined" && window !== null ? window.dat : void 0) || (typeof require === "function" ? require("dat") : void 0);
+  dat = dat || (typeof window !== "undefined" && window !== null ? window.dat : void 0) || (typeof require === "function" ? require("dat.gui") : void 0);
 
   Phaser = Phaser || (typeof window !== "undefined" && window !== null ? window.Phaser : void 0) || (typeof require === "function" ? require("phaser") : void 0);
 
