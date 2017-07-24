@@ -17,11 +17,11 @@ If `dat.gui/index.js` doesn't build, use `dat.gui/build/dat.gui.js` instead.
 
 ### Webpack
 
-Try [noParse](https://webpack.js.org/guides/shimming/#noparse-option) and use `window.SpriteGUI`.
+It should work.
 
 ### Drop-in install
 
-Add [dat.gui](https://github.com/dataarts/dat.gui/tree/master/build) and [index.js](index.js) before your game scripts.
+Add [dat.gui.js](https://github.com/dataarts/dat.gui/tree/master/build/dat.gui.js) and [index.js](index.js) before your game scripts.
 
 Use
 ---
@@ -30,7 +30,7 @@ Use
 // @create:
 var sprite = game.add.sprite();
 // …
-var gui = new SpriteGUI(sprite);
+var gui = new Phaser.SpriteGUI(sprite);
 
 // @shutdown:
 gui.destroy();
