@@ -6,19 +6,15 @@
 {mixin} = Phaser.Utils
 
 bg = undefined
-bgGui = undefined
 caption = undefined
 cursors = undefined
 droid = undefined
-droidGui = undefined
 guis = []
 hearts = undefined
 jumpButton = undefined
 jumpTimer = 0
 pack = undefined
-packGui = undefined
 player = undefined
-playerGui = undefined
 rocks = undefined
 score = 0
 
@@ -75,7 +71,7 @@ window.GAME = new (Phaser.Game)
       droid.bringToTop()
       caption.bringToTop()
       @addInput()
-      guis.push new Phaser.SpriteGUI bg, {width: 300, name: "tileSprite"}
+      guis.push new Phaser.SpriteGUI bg, {width: 300, name: "tileSprite"}, {include: ["key", "name", "x", "y", "position", "tilePosition", "tileScale"]}
       guis.push new Phaser.SpriteGUI player, {width: 300, name: "sprite"}
       guis.push new Phaser.SpriteGUI pack, {width: 300, name: "spriteWithInput"}
       return
