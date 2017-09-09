@@ -7,17 +7,21 @@ Install
 
 ### Bower
 
-    bower install -S samme/phaser-sprite-gui
+```sh
+bower install -S samme/phaser-sprite-gui
+```
 
 ### NPM
 
-    npm install -S phaser-sprite-gui
+```sh
+npm install -S phaser-sprite-gui
+```
 
-If `dat.gui/index.js` doesn't build, use `dat.gui/build/dat.gui.js` instead.
+If [dat.gui/index.js](https://github.com/dataarts/dat.gui/blob/master/index.js) doesn't compile, use [dat.gui/build/dat.gui.js](https://github.com/dataarts/dat.gui/blob/master/build/dat.gui.js) instead.
 
-### Webpack
+### CommonJS / Webpack
 
-It should work.
+It should work. The exported constructor is identical to `Phaser.SpriteGUI`.
 
 ### Drop-in install
 
@@ -27,12 +31,12 @@ Use
 ---
 
 ```javascript
-// @create:
+// In create():
 var sprite = game.add.sprite();
 // …
 var gui = new Phaser.SpriteGUI(sprite);
 
-// @shutdown:
+// In shutdown():
 gui.destroy();
 ```
 
