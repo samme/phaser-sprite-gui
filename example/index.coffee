@@ -6,17 +6,21 @@
 {mixin} = Phaser.Utils
 
 bg = undefined
+bgGui = undefined
+caption = undefined
 cursors = undefined
 droid = undefined
 droidGui = undefined
+guis = []
+hearts = undefined
 jumpButton = undefined
 jumpTimer = 0
-hearts = undefined
 pack = undefined
 packGui = undefined
 player = undefined
 playerGui = undefined
 rocks = undefined
+score = 0
 
 emitHeart = (_player, _pack) ->
   hearts
@@ -26,12 +30,12 @@ emitHeart = (_player, _pack) ->
 
 window.GAME = new (Phaser.Game)
   antialias: no
-  height: 480
+  height: 600
   renderer: Phaser.CANVAS
   # resolution: 1
-  scaleMode: Phaser.ScaleManager.SHOW_ALL
+  scaleMode: Phaser.ScaleManager.NO_SCALE
   # transparent: false
-  width: 320
+  width: 600
   state:
 
     init: ->
@@ -54,7 +58,6 @@ window.GAME = new (Phaser.Game)
       {physics, world} = @game
       {arcade} = physics
       Phaser.Canvas.setImageRenderingCrisp @game.canvas, true
-      world.setBounds 0, 0, 320, 600
       arcade.checkCollision =
         up:    off
         down:  on
@@ -67,28 +70,30 @@ window.GAME = new (Phaser.Game)
       @createRocks()
       @createPack()
       @createHearts()
-      text = @createCaption()
+      @createCaption()
       player.bringToTop()
       droid.bringToTop()
-      text.bringToTop()
+      caption.bringToTop()
       @addInput()
-      playerGui = new SpriteGUI player, width: 300
-      droidGui = new SpriteGUI droid, width: 300
-      packGui = new SpriteGUI pack, width: 300
+      guis.push new Phaser.SpriteGUI bg, {width: 300, name: "tileSprite"}
+      guis.push new Phaser.SpriteGUI player, {width: 300, name: "sprite"}
+      guis.push new Phaser.SpriteGUI pack, {width: 300, name: "spriteWithInput"}
       return
 
     update: ->
       {physics, world} = @game
-      physics.arcade.overlap player, pack, emitHeart
-      physics.arcade.collide [pack, player], [droid, rocks]
+      # physics.arcade.overlap player, pack, emitHeart
+      physics.arcade.collide player, rocks
+      physics.arcade.collide player, droid, -> score += 1
       @updatePlayer()
       world.wrap droid, droid.width
+      caption.text = "Score: #{score} • [R]estart"
       return
 
     shutdown: ->
-      playerGui.destroy()
-      droidGui.destroy()
-      packGui.destroy()
+      for gui in guis
+        console.info "destroy", gui
+        gui.destroy()
       return
 
     # Helpers
@@ -99,23 +104,19 @@ window.GAME = new (Phaser.Game)
       cursors = keyboard.createCursorKeys()
       jumpButton = keyboard.addKey Phaser.Keyboard.SPACEBAR
       keyboard.addKey(Phaser.KeyCode.R).onUp.add game.state.restart, game.state
-      keyboard.addKey(Phaser.KeyCode.T).onUp.add game.step, game
-      keyboard.addKey(Phaser.KeyCode.S).onUp.add (->
-        if game.stepping then game.disableStep() else game.enableStep()
-        return
-      ), game
       return
 
     createBg: ->
-      bg = @add.tileSprite 0, 0, 600, 600, "background"
+      bg = @add.tileSprite 0, 0, this.game.width, this.game.height, "background"
       bg.alpha = 0.5
+      bg.name = "tileSprite"
       bg.tilePosition.x = @rnd.between 0, 120
       bg
 
     createCaption: ->
-      @add.text(5, 5, "[R]estart / ±[S]tep / s(T)ep forward",
+      caption = @add.text 5, 5, "",
         fill: "white"
-        font: "bold 12px monospace")
+        font: "bold 24px monospace"
 
     createDroid: ->
       {physics, world} = this
@@ -149,18 +150,9 @@ window.GAME = new (Phaser.Game)
       {physics, world} = this
       pack = @add.sprite world.randomX, world.randomY, "firstaid"
       pack.name = "pack"
-      physics.enable pack
-      mixin
-        bounce: x: 0.25, y: 0.25
-        collideWorldBounds: yes
-        drag: x: 500, y: 0
-        mass: 0.5
-      , pack.body
       pack.inputEnabled = yes
       pack.input.useHandCursor = yes
       pack.input.enableDrag()
-      pack.events.onDragStart.add -> pack.body.enable = off
-      pack.events.onDragStop .add -> pack.body.enable = on
       pack
 
     createPlayer: ->
