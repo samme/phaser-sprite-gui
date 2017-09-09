@@ -2,7 +2,7 @@
 
 # http://phaser.io/examples/v2/arcade-physics/platformer-basics
 
-{Phaser, SpriteGUI} = this
+{Phaser} = this
 {mixin} = Phaser.Utils
 
 bg = undefined
@@ -17,12 +17,6 @@ pack = undefined
 player = undefined
 rocks = undefined
 score = 0
-
-emitHeart = (_player, _pack) ->
-  hearts
-    .at _pack.body
-    .emitParticle()
-  return
 
 window.GAME = new (Phaser.Game)
   antialias: no
@@ -51,8 +45,7 @@ window.GAME = new (Phaser.Game)
       return
 
     create: ->
-      {physics, world} = @game
-      {arcade} = physics
+      {arcade} = @physics
       Phaser.Canvas.setImageRenderingCrisp @game.canvas, true
       arcade.checkCollision =
         up:    off
@@ -77,10 +70,10 @@ window.GAME = new (Phaser.Game)
       return
 
     update: ->
-      {physics, world} = @game
-      # physics.arcade.overlap player, pack, emitHeart
-      physics.arcade.collide player, rocks
-      physics.arcade.collide player, droid, -> score += 1
+      {world} = @game
+      {arcade} = @physics
+      arcade.collide player, rocks
+      arcade.collide player, droid, -> score += 1
       @updatePlayer()
       world.wrap droid, droid.width
       caption.text = "Score: #{score} • [R]estart"
@@ -88,7 +81,7 @@ window.GAME = new (Phaser.Game)
 
     shutdown: ->
       for gui in guis
-        console.info "destroy", gui
+        # console.info "Destroy", gui
         gui.destroy()
       return
 
@@ -143,7 +136,7 @@ window.GAME = new (Phaser.Game)
       hearts
 
     createPack: ->
-      {physics, world} = this
+      {world} = this
       pack = @add.sprite world.randomX, world.randomY, "firstaid"
       pack.name = "pack"
       pack.inputEnabled = yes
