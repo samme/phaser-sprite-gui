@@ -63,7 +63,7 @@ CONST = freezeDeep
   snapOffset:
     range: [-100, 100, 5]
   scale:
-    # range: [-10, 10, 0.1]
+    range: [-10, 10, 0.1]
     min: -10
     max:  10
     step:  0.1
@@ -89,6 +89,7 @@ spriteProps = (sprite) ->
   {world} = sprite.game
   {bounds} = world
   {animations, body, input} = sprite
+  {width, height} = sprite.texture.frame
   scaleRange = [
     sprite.scaleMin or CONST.scale.min
     sprite.scaleMax or CONST.scale.max
@@ -223,6 +224,18 @@ spriteProps = (sprite) ->
       y: scaleRange
     sendToBack: yes
     smoothed: yes
+    tilePosition:
+      if sprite.tilePosition
+        x: [0, width, 1]
+        y: [0, height, 1]
+      else
+        no
+    tileScale:
+      if sprite.tileScale
+        x: CONST.scale.range
+        y: CONST.scale.range
+      else
+        no
     tint: yes
     visible: yes
     x: worldRangeX

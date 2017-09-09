@@ -101,6 +101,7 @@
       range: [-100, 100, 5]
     },
     scale: {
+      range: [-10, 10, 0.1],
       min: -10,
       max: 10,
       step: 0.1
@@ -133,10 +134,11 @@
   };
 
   spriteProps = function(sprite) {
-    var animations, body, bounds, input, scaleRange, world, worldRangeHeight, worldRangeWidth, worldRangeX, worldRangeY, worldRect;
+    var animations, body, bounds, height, input, ref, scaleRange, width, world, worldRangeHeight, worldRangeWidth, worldRangeX, worldRangeY, worldRect;
     world = sprite.game.world;
     bounds = world.bounds;
     animations = sprite.animations, body = sprite.body, input = sprite.input;
+    ref = sprite.texture.frame, width = ref.width, height = ref.height;
     scaleRange = [sprite.scaleMin || CONST.scale.min, sprite.scaleMax || CONST.scale.max, CONST.scale.step];
     worldRangeX = [bounds.left, bounds.right, 10];
     worldRangeY = [bounds.top, bounds.bottom, 10];
@@ -265,6 +267,14 @@
       },
       sendToBack: true,
       smoothed: true,
+      tilePosition: sprite.tilePosition ? {
+        x: [0, width, 1],
+        y: [0, height, 1]
+      } : false,
+      tileScale: sprite.tileScale ? {
+        x: CONST.scale.range,
+        y: CONST.scale.range
+      } : false,
       tint: true,
       visible: true,
       x: worldRangeX,
