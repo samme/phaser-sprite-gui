@@ -215,6 +215,9 @@ spriteProps = (sprite) ->
     name: yes
     outOfBoundsKill: yes
     outOfCameraBoundsKill: yes
+    pivot:
+      x: [-bounds.width, bounds.width, 10]
+      y: [-bounds.height, bounds.height, 10]
     renderable: yes
     reset: yes
     revive: yes
