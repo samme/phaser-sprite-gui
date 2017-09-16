@@ -257,6 +257,10 @@
       name: true,
       outOfBoundsKill: true,
       outOfCameraBoundsKill: true,
+      pivot: {
+        x: [-bounds.width, bounds.width, 10],
+        y: [-bounds.height, bounds.height, 10]
+      },
       renderable: true,
       reset: true,
       revive: true,
