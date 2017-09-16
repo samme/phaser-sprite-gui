@@ -1,5 +1,7 @@
+.eslintrc*
 *.coffee
 *.html
 *.png
+bower_components
 bower.json
 example/
